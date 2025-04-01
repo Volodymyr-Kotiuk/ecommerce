@@ -1,6 +1,8 @@
-import axios from "axios";
+import axios from 'axios';
+
+const API_URL = 'http://localhost:3000/products';
 
 export const fetchProducts = async () => {
-  const { data } = await axios.get("http://localhost:3000/products");
-  return data;
+  const response = await axios.get(API_URL);
+  return response.data;
 };

@@ -1,28 +1,22 @@
+import React from 'react';
 import { useQuery } from '@tanstack/react-query';
-import { fetchProducts, Product } from '../api/productsApi';
-import { Box, Button, Card, CardContent, Typography } from '@mui/material';
+import { fetchProducts } from '../api/productsApi';
+import { Box, Card, CardContent, Typography } from '@mui/material';
 
-const ProductsPage = () => {
-  // Використовуємо React Query для отримання товарів
-  const { data: products, error, isLoading } = useQuery<Product[]>({
-    queryKey: ['products'],
-    queryFn: fetchProducts
-  });
+const ProductsPage: React.FC = () => {
+  const { data: products, error, isLoading } = useQuery(['products'], fetchProducts);
 
-  if (isLoading) return <p>Завантаження...</p>;
-  if (error) return <p>Помилка: {error.message}</p>;
+  if (isLoading) return <div>Loading...</div>;
+  if (error) return <div>Error loading products</div>;
 
   return (
-    <Box display="grid" gridTemplateColumns="repeat(3, 1fr)" gap={2} padding={2}>
-      {products?.map((product) => (
-        <Card key={product.id} variant="outlined">
+    <Box display="flex" flexWrap="wrap" justifyContent="center" gap={2}>
+      {products.map((product: any) => (
+        <Card key={product.id} sx={{ width: 300 }}>
           <CardContent>
             <Typography variant="h6">{product.name}</Typography>
-            <Typography color="text.secondary">{product.description}</Typography>
-            <Typography variant="h5">{product.price} грн</Typography>
-            <Button variant="contained" color="primary" sx={{ marginTop: 2 }}>
-              Додати в кошик
-            </Button>
+            <Typography>{product.description}</Typography>
+            <Typography>${product.price}</Typography>
           </CardContent>
         </Card>
       ))}
